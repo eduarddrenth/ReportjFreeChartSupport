@@ -10,12 +10,12 @@ package com.vectorprint.report.jfree;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
@@ -24,7 +24,8 @@ package com.vectorprint.report.jfree;
 import com.vectorprint.VectorPrintException;
 import com.vectorprint.configuration.EnhancedMap;
 import com.vectorprint.report.itext.style.stylers.Chart;
-
+import java.io.IOException;
+import java.io.OutputStream;
 import org.jfree.chart.*;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
@@ -34,10 +35,6 @@ import org.jfree.data.general.Dataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-
-//~--- JDK imports ------------------------------------------------------------
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  *
@@ -76,7 +73,9 @@ public class ChartBuilder {
    }
 
    /**
-    * Bottleneck constructor, called from {@link Chart#initImage(com.itextpdf.text.pdf.PdfContentByte, org.jfree.data.general.Dataset) }.
+    * Bottleneck constructor, called from {@link Chart#createImage(com.itextpdf.text.pdf.PdfContentByte, org.jfree.data.general.Dataset, float)
+    * }.
+    *
     * @param type
     * @param data
     * @param title
@@ -86,7 +85,7 @@ public class ChartBuilder {
     * @param legend
     * @param themeBuilder
     * @param settings
-    * @throws VectorPrintException 
+    * @throws VectorPrintException
     */
    public ChartBuilder(CHARTTYPE type, Dataset data, String title, String categoryLabel, String valueLabel,
        boolean vertical, boolean legend, ChartThemeBuilder themeBuilder, EnhancedMap settings)

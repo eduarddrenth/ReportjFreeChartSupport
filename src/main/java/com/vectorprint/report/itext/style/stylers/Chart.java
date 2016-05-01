@@ -14,12 +14,12 @@ package com.vectorprint.report.itext.style.stylers;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
@@ -53,8 +53,9 @@ import org.jfree.data.general.Dataset;
 
 /**
  * printing jFree charts as images. If you want theme your charts you should implemement {@link ChartThemeBuilder}, give
- * it a no argument constructor and pass its classname as {@link #THEMEBUILDER parameter}. This styler requires a special
- * bindingfactory, therefore instantiation will call {@link ChartFactoryValidator#setEnabled(boolean) } with true.
+ * it a no argument constructor and pass its classname as {@link #THEMEBUILDER parameter}. This styler requires a
+ * special bindingfactory, therefore instantiation will call {@link ChartFactoryValidator#setEnabled(boolean) } with
+ * true.
  *
  * @author Eduard Drenth at VectorPrint.nl
  */
@@ -87,7 +88,7 @@ public class Chart extends com.vectorprint.report.itext.style.stylers.Image<Data
       addParameter(new ChartThemeParameter(THEMEBUILDER, "classname of the themebuilder to use").
           setDefault(new DefaultChartThemeBuilder()), Chart.class);
       ChartFactoryValidator.setEnabled(true);
-}
+   }
 
    public Chart(ImageLoader imageLoader, LayerManager layerManager, Document document, PdfWriter writer, EnhancedMap settings) throws VectorPrintException {
       super(imageLoader, layerManager, document, writer, settings);
@@ -96,7 +97,7 @@ public class Chart extends com.vectorprint.report.itext.style.stylers.Image<Data
 
    /**
     * calls {@link ChartBuilder#ChartBuilder(com.vectorprint.report.jfree.ChartBuilder.CHARTTYPE, org.jfree.data.general.Dataset, java.lang.String, java.lang.String, java.lang.String, com.vectorprint.report.jfree.ChartThemeBuilder, com.vectorprint.configuration.EnhancedMap)}, {@link ChartBuilder#getChart()
-    * } and {@link ItextChartHelper#getChartImage(org.jfree.chart.JFreeChart, com.itextpdf.text.pdf.PdfContentByte, float, float)
+    * } and {@link ItextChartHelper#getChartImage(org.jfree.chart.JFreeChart, com.itextpdf.text.pdf.PdfContentByte, float, float, float)
     * } to create an Image of a chart.
     *
     * @param canvas
@@ -211,5 +212,4 @@ public class Chart extends com.vectorprint.report.itext.style.stylers.Image<Data
       return "draw a (jFree)Chart." + " " + super.getHelp();
    }
 
-   
 }
