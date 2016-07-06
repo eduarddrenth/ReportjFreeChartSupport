@@ -14,17 +14,16 @@ package com.vectorprint.report.running;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
 import com.itextpdf.text.pdf.PdfReader;
 import com.vectorprint.VectorPrintException;
 import com.vectorprint.configuration.Settings;
@@ -51,7 +50,7 @@ import org.junit.Test;
 public class JFreeChartReportBuilderTest {
 
    private static ReportRunner instance;
-//   private static 
+//   private static
    public static final String TARGET = "target" + File.separator;
 
    public JFreeChartReportBuilderTest() throws IOException {
@@ -64,9 +63,9 @@ public class JFreeChartReportBuilderTest {
 
    private static void init(boolean allowEmpties) throws IOException, VectorPrintException, JAXBException {
       FindableProperties.clearStaticReferences();
-      instance = allowEmpties ?
-          new ReportRunner(new SettingsFromJAXB().fromJaxb(SettingsXMLHelper.fromXML(new FileReader("src/test/resources/settings.xml")))) :
-          new ReportRunner(new SettingsFromJAXB().fromJaxb(SettingsXMLHelper.fromXML(new FileReader("src/test/resources/settingsNoEmpties.xml"))));
+      instance = allowEmpties
+          ? new ReportRunner(new SettingsFromJAXB().fromJaxb(SettingsXMLHelper.fromXML(new FileReader("src/test/resources/settings.xml"))))
+          : new ReportRunner(new SettingsFromJAXB().fromJaxb(SettingsXMLHelper.fromXML(new FileReader("src/test/resources/settingsNoEmpties.xml"))));
    }
 
    @AfterClass
@@ -83,22 +82,21 @@ public class JFreeChartReportBuilderTest {
    @After
    public void tearDown() {
    }
-   
+
    private void checkPdf(String path) throws IOException {
       new PdfReader(path);
    }
 
-
    @Test
    public void testjFreeChart() throws Exception {
-      instance.buildReport(new String[]{"output="+ TARGET+"testjFreeChart.pdf"});
-      checkPdf(TARGET+"testjFreeChart.pdf");
+      instance.buildReport(new String[]{"output=" + TARGET + "testjFreeChart.pdf"});
+      checkPdf(TARGET + "testjFreeChart.pdf");
    }
 
    @Test
    public void testjFreeChartDebug() throws Exception {
-      instance.buildReport(new String[]{"output="+ TARGET+"testjFreeChartDebug.pdf\ndebug=true"});
-      checkPdf(TARGET+"testjFreeChartDebug.pdf");
+      instance.buildReport(new String[]{"output=" + TARGET + "testjFreeChartDebug.pdf\ndebug=true"});
+      checkPdf(TARGET + "testjFreeChartDebug.pdf");
    }
 
 }

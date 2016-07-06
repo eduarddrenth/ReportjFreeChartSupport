@@ -14,17 +14,16 @@ package com.vectorprint.report.running;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -33,6 +32,7 @@ import com.itextpdf.text.Rectangle;
 import com.vectorprint.VectorPrintException;
 import com.vectorprint.report.data.DataCollectionMessages;
 import com.vectorprint.report.data.ReportDataHolder;
+import com.vectorprint.report.fxchart.JavaFXHelper;
 import com.vectorprint.report.itext.BaseReportGenerator;
 import com.vectorprint.report.itext.DefaultElementProducer;
 import com.vectorprint.report.itext.EventHelper;
@@ -40,6 +40,12 @@ import com.vectorprint.report.itext.style.BaseStyler;
 import com.vectorprint.report.itext.style.StyleHelper;
 import com.vectorprint.report.itext.style.stylers.Chart;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.Dataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -52,7 +58,6 @@ import org.jfree.data.xy.DefaultXYDataset;
  */
 public class TestableReportGenerator extends BaseReportGenerator<ReportDataHolder> {
 
-
    public TestableReportGenerator() throws VectorPrintException {
       super(new EventHelper<>(), new DefaultElementProducer());
    }
@@ -63,9 +68,9 @@ public class TestableReportGenerator extends BaseReportGenerator<ReportDataHolde
          Dataset ds = new DefaultCategoryDataset();
          Chart c = getChartStylers("area");
          c.setData(ds);
-         c.draw(new Rectangle(40, 40, 100, 100),"");
+         c.draw(new Rectangle(40, 40, 100, 100), "");
          document.newPage();
-         
+
          createAndAddElement(ds, getStylers("area"), Image.class);
          createAndAddElement(ds, getStylers("bar"), Image.class);
          createAndAddElement(ds, getStylers("bar3d"), Image.class);
@@ -77,7 +82,25 @@ public class TestableReportGenerator extends BaseReportGenerator<ReportDataHolde
          createAndAddElement(new DefaultXYDataset(), getStylers("xyarea"), Image.class);
          createAndAddElement(new DefaultXYDataset(), getStylers("xyline"), Image.class);
          createAndAddElement(null, getStylers("xyline"), Image.class);
-         
+
+         Scene scene = new Scene(new Group(), 500, 500);
+
+         new JFXPanel(); // needed because of "Toolkit not initialized"
+
+         ObservableList<PieChart.Data> pieChartData
+             = FXCollections.observableArrayList(
+                 new PieChart.Data("Grapefruit", 13),
+                 new PieChart.Data("Oranges", 25),
+                 new PieChart.Data("Plums", 10),
+                 new PieChart.Data("Pears", 22),
+                 new PieChart.Data("Apples", 30));
+         final PieChart chart = new PieChart(pieChartData);
+         chart.setTitle("Imported Fruits");
+
+         ((Group) scene.getRoot()).getChildren().add(chart);
+
+         document.add(JavaFXHelper.getSceneImage(scene, writer.getDirectContent(), 1));
+
       } catch (InstantiationException | IllegalAccessException ex) {
          throw new VectorPrintException(ex);
       }
