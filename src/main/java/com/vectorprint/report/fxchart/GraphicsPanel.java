@@ -6,7 +6,7 @@
 package com.vectorprint.report.fxchart;
 
 import java.awt.Graphics;
-import java.util.Observer;
+import java.util.concurrent.Semaphore;
 import javafx.embed.swing.JFXPanel;
 
 /**
@@ -16,11 +16,11 @@ import javafx.embed.swing.JFXPanel;
 class GraphicsPanel extends JFXPanel {
 
    private final Graphics graphics;
-   private final Observer observer;
+   private final Semaphore rendered;
 
-   public GraphicsPanel(Graphics graphics, Observer observer) {
+   public GraphicsPanel(Graphics graphics, Semaphore rendered) {
       this.graphics = graphics;
-      this.observer = observer;
+      this.rendered = rendered;
    }
 
    @Override
@@ -31,7 +31,7 @@ class GraphicsPanel extends JFXPanel {
    @Override
    public void paint(Graphics g) {
       super.paint(g);
-      observer.update(null, g);
+      rendered.release();
    }
 
 }

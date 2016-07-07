@@ -29,8 +29,7 @@ import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfTemplate;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.concurrent.Semaphore;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javax.swing.JFrame;
@@ -43,7 +42,7 @@ import javax.swing.JFrame;
 public class JavaFXHelper {
 
    public static Image getSceneImage(Scene scene, PdfContentByte contentByte, float opacity)
-       throws BadElementException {
+       throws BadElementException, InterruptedException {
 
       // create PdfTemplate from PdfContentByte
       PdfTemplate template = contentByte.createTemplate((float) scene.getWidth(), (float) scene.getHeight());
@@ -59,24 +58,21 @@ public class JavaFXHelper {
       // setup the drawing area
       Rectangle2D r2D = new Rectangle2D.Double(0, 0, (float) scene.getWidth(), (float) scene.getHeight());
 
-      JFrame frame = new JFrame();
-      RenderingWatcher renderingWatcher = new RenderingWatcher(frame);
+      final Semaphore rendered = new Semaphore(1);
+      rendered.acquire();
 
-      JFXPanel panel = new GraphicsPanel(g2, renderingWatcher);
+      JFXPanel panel = new GraphicsPanel(g2, rendered);
       panel.setScene(scene);
 
+      JFrame frame = new JFrame("closes renedering is complete");
       frame.setSize(Math.round((float) scene.getWidth()), Math.round((float) scene.getHeight()));
-      frame.setUndecorated(true);
       frame.setEnabled(false);
       frame.add(panel);
       frame.setVisible(true);
 
-      while (frame.isVisible()) {
-         try {
-            Thread.sleep(100);
-         } catch (InterruptedException ex) {
-         }
-      }
+      rendered.acquire();
+
+      frame.setVisible(false);
 
       // pass the Graphics2D and drawing area to JFreeChart
       g2.dispose();    // always dispose this
@@ -87,18 +83,4 @@ public class JavaFXHelper {
       return Image.getInstance(template);
    }
 
-   private static class RenderingWatcher implements Observer {
-
-      private final JFrame jFrame;
-
-      public RenderingWatcher(JFrame jFrame) {
-         this.jFrame = jFrame;
-      }
-
-      @Override
-      public void update(Observable o, Object arg) {
-         jFrame.setVisible(false);
-      }
-
-   }
 }
