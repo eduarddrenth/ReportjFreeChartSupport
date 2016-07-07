@@ -6,24 +6,32 @@
 package com.vectorprint.report.fxchart;
 
 import java.awt.Graphics;
+import java.util.Observer;
 import javafx.embed.swing.JFXPanel;
 
 /**
  *
  * @author Eduard Drenth at VectorPrint.nl
  */
-class ExtraGraphicsPanel extends JFXPanel {
+class GraphicsPanel extends JFXPanel {
 
-   private final Graphics extraGraphics;
+   private final Graphics graphics;
+   private final Observer observer;
 
-   public ExtraGraphicsPanel(Graphics extraGraphics) {
-      this.extraGraphics = extraGraphics;
+   public GraphicsPanel(Graphics graphics, Observer observer) {
+      this.graphics = graphics;
+      this.observer = observer;
    }
 
    @Override
    protected void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      super.paintComponent(extraGraphics);
+      super.paintComponent(graphics);
+   }
+
+   @Override
+   public void paint(Graphics g) {
+      super.paint(g);
+      observer.update(null, g);
    }
 
 }

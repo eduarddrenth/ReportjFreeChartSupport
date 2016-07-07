@@ -29,6 +29,8 @@ import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfTemplate;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Observable;
+import java.util.Observer;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javax.swing.JFrame;
@@ -57,22 +59,46 @@ public class JavaFXHelper {
       // setup the drawing area
       Rectangle2D r2D = new Rectangle2D.Double(0, 0, (float) scene.getWidth(), (float) scene.getHeight());
 
-      JFXPanel panel = new ExtraGraphicsPanel(g2);
+      JFrame frame = new JFrame();
+      RenderingWatcher renderingWatcher = new RenderingWatcher(frame);
+
+      JFXPanel panel = new GraphicsPanel(g2, renderingWatcher);
       panel.setScene(scene);
 
-      JFrame frame = new JFrame();
       frame.setSize(Math.round((float) scene.getWidth()), Math.round((float) scene.getHeight()));
+      frame.setUndecorated(true);
+      frame.setEnabled(false);
       frame.add(panel);
       frame.setVisible(true);
 
+      while (frame.isVisible()) {
+         try {
+            Thread.sleep(100);
+         } catch (InterruptedException ex) {
+         }
+      }
+
       // pass the Graphics2D and drawing area to JFreeChart
       g2.dispose();    // always dispose this
-
-      frame.setVisible(false);
 
       template.restoreState();
 
       // create Image from PdfTemplate
       return Image.getInstance(template);
+   }
+
+   private static class RenderingWatcher implements Observer {
+
+      private final JFrame jFrame;
+
+      public RenderingWatcher(JFrame jFrame) {
+         this.jFrame = jFrame;
+      }
+
+      @Override
+      public void update(Observable o, Object arg) {
+         jFrame.setVisible(false);
+      }
+
    }
 }
