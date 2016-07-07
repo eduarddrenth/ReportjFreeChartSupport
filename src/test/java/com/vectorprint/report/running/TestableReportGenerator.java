@@ -32,7 +32,6 @@ import com.itextpdf.text.Rectangle;
 import com.vectorprint.VectorPrintException;
 import com.vectorprint.report.data.DataCollectionMessages;
 import com.vectorprint.report.data.ReportDataHolder;
-import com.vectorprint.report.fxchart.JavaFXHelper;
 import com.vectorprint.report.itext.BaseReportGenerator;
 import com.vectorprint.report.itext.DefaultElementProducer;
 import com.vectorprint.report.itext.EventHelper;
@@ -40,12 +39,6 @@ import com.vectorprint.report.itext.style.BaseStyler;
 import com.vectorprint.report.itext.style.StyleHelper;
 import com.vectorprint.report.itext.style.stylers.Chart;
 import java.util.List;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.Dataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -82,24 +75,6 @@ public class TestableReportGenerator extends BaseReportGenerator<ReportDataHolde
          createAndAddElement(new DefaultXYDataset(), getStylers("xyarea"), Image.class);
          createAndAddElement(new DefaultXYDataset(), getStylers("xyline"), Image.class);
          createAndAddElement(null, getStylers("xyline"), Image.class);
-
-         Scene scene = new Scene(new Group(), 500, 500);
-
-         new JFXPanel(); // needed because of "Toolkit not initialized"
-
-         ObservableList<PieChart.Data> pieChartData
-             = FXCollections.observableArrayList(
-                 new PieChart.Data("Grapefruit", 13),
-                 new PieChart.Data("Oranges", 25),
-                 new PieChart.Data("Plums", 10),
-                 new PieChart.Data("Pears", 22),
-                 new PieChart.Data("Apples", 30));
-         final PieChart chart = new PieChart(pieChartData);
-         chart.setTitle("Imported Fruits");
-
-         ((Group) scene.getRoot()).getChildren().add(chart);
-
-         document.add(JavaFXHelper.getSceneImage(scene, writer.getDirectContent(), 1));
 
       } catch (InstantiationException | IllegalAccessException ex) {
          throw new VectorPrintException(ex);
