@@ -14,17 +14,16 @@ package com.vectorprint.report.running;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -52,7 +51,6 @@ import org.jfree.data.xy.DefaultXYDataset;
  */
 public class TestableReportGenerator extends BaseReportGenerator<ReportDataHolder> {
 
-
    public TestableReportGenerator() throws VectorPrintException {
       super(new EventHelper<>(), new DefaultElementProducer());
    }
@@ -63,9 +61,9 @@ public class TestableReportGenerator extends BaseReportGenerator<ReportDataHolde
          Dataset ds = new DefaultCategoryDataset();
          Chart c = getChartStylers("area");
          c.setData(ds);
-         c.draw(new Rectangle(40, 40, 100, 100),"");
+         c.draw(new Rectangle(40, 40, 100, 100), "");
          document.newPage();
-         
+
          createAndAddElement(ds, getStylers("area"), Image.class);
          createAndAddElement(ds, getStylers("bar"), Image.class);
          createAndAddElement(ds, getStylers("bar3d"), Image.class);
@@ -77,7 +75,7 @@ public class TestableReportGenerator extends BaseReportGenerator<ReportDataHolde
          createAndAddElement(new DefaultXYDataset(), getStylers("xyarea"), Image.class);
          createAndAddElement(new DefaultXYDataset(), getStylers("xyline"), Image.class);
          createAndAddElement(null, getStylers("xyline"), Image.class);
-         
+
       } catch (InstantiationException | IllegalAccessException ex) {
          throw new VectorPrintException(ex);
       }
